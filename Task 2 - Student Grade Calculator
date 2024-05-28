@@ -1,0 +1,77 @@
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+class GradeCalculator {
+    private int[] marks;
+    private int totalMarks;
+
+    public GradeCalculator(int[] marks) {
+        this.marks = marks;
+        calculateTotalMarks();
+    }
+
+    private void calculateTotalMarks() {
+        totalMarks = 0; 
+        for (int mark : marks) {
+            totalMarks += mark;
+        }
+    }
+
+    public double calculateAveragePercentage() {
+        return (double) totalMarks / marks.length;
+    }
+
+    public char calculateGrade() {
+        double averagePercentage = calculateAveragePercentage();
+        if (averagePercentage >= 90) {
+            return 'A';
+        } else if (averagePercentage >= 80) {
+            return 'B';
+        } else if (averagePercentage >= 70) {
+            return 'C';
+        } else if (averagePercentage >= 60) {
+            return 'D';
+        } else if (averagePercentage >= 50) {
+            return 'E';
+        } else {
+            return 'F';
+        }
+    }
+
+    public void displayResults() {
+        System.out.println("\nTotal Marks: " + totalMarks);
+        System.out.println("Average Percentage: " + calculateAveragePercentage());
+        System.out.println("Grade: " + calculateGrade());
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int[] marks = new int[5];
+
+        System.out.println("Enter marks obtained in each subject (out of 100):");
+
+        for (int i = 0; i < marks.length; i++) {
+            while (true) {
+                System.out.print("Subject " + (i + 1) + ": ");
+                try {
+                    int mark = scanner.nextInt();
+                    if (mark >= 0 && mark <= 100) {
+                        marks[i] = mark;
+                        break; 
+                    } else {
+                        System.out.println("Invalid mark. Please enter a value between 0 and 100.");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter an integer value.");
+                    scanner.next(); 
+                }
+            }
+        }
+        GradeCalculator gradeCalculator = new GradeCalculator(marks);
+        gradeCalculator.displayResults();
+
+        scanner.close();
+    }
+}
